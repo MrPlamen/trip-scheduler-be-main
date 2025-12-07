@@ -3,24 +3,29 @@ package main.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
-
 @Entity
-@Builder
+@Table(
+        name = "visit_item_likes",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"visit_item_id", "user_id"})
+)
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
+@Builder
 public class VisitItemLike {
 
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-    private String email;
-    private UUID userId;
-    private UUID tripId;
-    private UUID visitItemId;
-    private boolean likeValue;
+    @Column(name = "visit_item_id", nullable = false)
+    private String visitItemId;
+
+    @Column(name = "user_id", nullable = false)
+    private String userId;
+
+    @Column(nullable = false)
+    private boolean liked;
 }
+
 

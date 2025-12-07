@@ -30,6 +30,9 @@ public class VisitItem {
     @Column(nullable = false)
     private String imageUrl;
 
+    @Column(nullable = false)
+    private UUID _ownerId;
+
     @Column
     private LocalDateTime createdOn;
 

@@ -14,7 +14,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // fully disable CSRF for all endpoints
                 .cors(cors -> cors.configurationSource(request -> {
                     var config = new org.springframework.web.cors.CorsConfiguration();
                     config.setAllowCredentials(true);
@@ -24,15 +24,19 @@ public class WebSecurityConfig {
                     return config;
                 }))
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
                         .requestMatchers(
                                 "/users/login",
                                 "/users/register",
                                 "/users/me",
                                 "/data/trips",
                                 "/data/trips/**",
-                                "/trips/*/visit-items",       // match /trips/{tripId}/visit-items
-                                "/trips/*/visit-items/*"      // match /trips/{tripId}/visit-items/{visitItemId}
+                                "/trips/*/visit-items",
+                                "/trips/*/visit-items/*",
+                                "/trips/*/likes",
+                                "/trips/*/likes/*",
+                                "/trips/**/likes",
+                                "/visit-item-likes",
+                                "/visit-item-likes/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
