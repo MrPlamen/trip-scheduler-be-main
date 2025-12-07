@@ -10,9 +10,10 @@ public interface VisitItemLikeRepository extends JpaRepository<VisitItemLike, St
 
     Optional<VisitItemLike> findByVisitItemIdAndUserId(String visitItemId, String userId);
 
-    long countByVisitItemId(String visitItemId);
+    long countByVisitItemIdAndLikedTrue(String visitItemId);
 
     List<VisitItemLike> findAllByVisitItemId(String visitItemId);
 }
+
 
 

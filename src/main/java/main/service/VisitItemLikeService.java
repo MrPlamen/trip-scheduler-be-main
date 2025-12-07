@@ -33,7 +33,7 @@ public class VisitItemLikeService {
     }
 
     public long getLikeCount(String visitItemId) {
-        return likeRepository.countByVisitItemId(visitItemId);
+        return likeRepository.countByVisitItemIdAndLikedTrue(visitItemId);
     }
 
     public boolean isLikedByUser(String visitItemId, String userId) {
@@ -46,4 +46,5 @@ public class VisitItemLikeService {
         return likeRepository.findAllByVisitItemId(visitItemId);
     }
 }
+
 

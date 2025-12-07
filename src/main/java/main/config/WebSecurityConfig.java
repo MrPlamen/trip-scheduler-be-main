@@ -14,12 +14,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable()) // fully disable CSRF for all endpoints
+                .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> {
                     var config = new org.springframework.web.cors.CorsConfiguration();
                     config.setAllowCredentials(true);
                     config.setAllowedOrigins(List.of("http://localhost:5173"));
-                    config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     return config;
                 }))
@@ -30,13 +30,9 @@ public class WebSecurityConfig {
                                 "/users/me",
                                 "/data/trips",
                                 "/data/trips/**",
-                                "/trips/*/visit-items",
-                                "/trips/*/visit-items/*",
-                                "/trips/*/likes",
-                                "/trips/*/likes/*",
-                                "/trips/**/likes",
-                                "/visit-item-likes",
-                                "/visit-item-likes/**"
+                                "/trips/*/visit-items/**",
+                                "/trips/*/likes/**",
+                                "/visitItemLikes/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -47,3 +43,4 @@ public class WebSecurityConfig {
         return http.build();
     }
 }
+
