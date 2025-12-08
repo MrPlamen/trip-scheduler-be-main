@@ -59,5 +59,12 @@ public class VisitItemController {
     ) {
         visitItemService.deleteVisitItem(tripId, visitItemId);
     }
+
+    @GetMapping("/visit-items/{visitItemId}")
+    public VisitItemResponse getVisitItemById(@PathVariable UUID visitItemId) {
+
+        System.out.println("I got hit - getVisitItemById");
+        return visitItemService.getVisitItemById(visitItemId);
+    }
 }
 

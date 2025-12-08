@@ -73,5 +73,13 @@ public class VisitItemService {
 
         visitItemRepository.delete(item);
     }
+
+    public VisitItemResponse getVisitItemById(UUID visitItemId) {
+        VisitItem item = visitItemRepository.findById(visitItemId)
+                .orElseThrow(() -> new RuntimeException("Visit item not found"));
+
+        return VisitItemResponse.fromEntity(item);
+    }
+
 }
 
