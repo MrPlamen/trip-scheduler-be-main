@@ -1,11 +1,9 @@
 package main.web;
 
 import main.service.VisitItemService;
-import main.web.dto.VisitItemRequest;
 import main.web.dto.VisitItemResponse;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
