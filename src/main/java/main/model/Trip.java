@@ -43,7 +43,7 @@ public class Trip {
     @Column(nullable = false)
     private String summary;
 
-    // Owner’s email or ID (optional — depends on your app)
+    @Column(nullable = false, unique = true)
     private String ownerEmail;
 
     @Column

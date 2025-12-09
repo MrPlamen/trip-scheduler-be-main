@@ -92,5 +92,4 @@ It acts as a small social network focused on trip organization.
 
 This is an evolving project with room for additional features such as: -
 Notifications - File uploads (maps, images) - More advanced
-permissions - Trip timelines and schedules - Location pins.
-
+permissions - Trip timelines and schedules - Location pins - Kafka
