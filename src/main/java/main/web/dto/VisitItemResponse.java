@@ -7,7 +7,9 @@ import lombok.Setter;
 import main.model.VisitItem;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -19,8 +21,10 @@ public class VisitItemResponse {
     private String title;
     private String description;
     private String imageUrl;
+    private UUID ownerId;
     private LocalDate date;
-    private Integer order;
+    private Set<MemberResponse> members;
+//    private Integer order;
 
     public static VisitItemResponse fromEntity(VisitItem entity) {
         VisitItemResponse dto = new VisitItemResponse();
@@ -28,6 +32,12 @@ public class VisitItemResponse {
         dto.setTitle(entity.getTitle());
         dto.setDescription(entity.getDescription());
         dto.setImageUrl(entity.getImageUrl());
+        dto.setOwnerId(entity.get_ownerId());
+        dto.setMembers(
+                entity.getMembers().stream()
+                        .map(MemberResponse::fromUser)
+                        .collect(Collectors.toSet())
+        );
 //        dto.setDate(entity.getDate());
 //        dto.setOrder(entity.getOrder());
 

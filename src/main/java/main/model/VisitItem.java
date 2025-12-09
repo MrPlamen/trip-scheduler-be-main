@@ -39,7 +39,6 @@ public class VisitItem {
     @Column
     private LocalDateTime updatedOn;
 
-    // === RELATIONSHIPS ===
     @ManyToOne
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;

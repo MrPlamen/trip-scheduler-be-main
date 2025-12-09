@@ -43,7 +43,7 @@ public class Trip {
     @Column(nullable = false)
     private String summary;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String ownerEmail;
 
     @Column
@@ -52,7 +52,6 @@ public class Trip {
     @Column
     private LocalDateTime updatedOn;
 
-    // === RELATIONSHIPS ===
     @ManyToMany
     @JoinTable(
             name = "trip_members",
