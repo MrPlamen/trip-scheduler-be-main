@@ -33,7 +33,9 @@ public class WebSecurityConfig {
                                 "/trips/*/visit-items/**",
                                 "/trips/*/likes/**",
                                 "/visitItemLikes/**",
-                                "/visit-items/**"
+                                "/visit-items/**",
+                                "/comments/**",
+                                "/error"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -42,3 +44,4 @@ public class WebSecurityConfig {
         return http.build();
     }
 }
+
