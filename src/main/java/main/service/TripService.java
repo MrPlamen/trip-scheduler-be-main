@@ -2,13 +2,14 @@ package main.service;
 
 import lombok.RequiredArgsConstructor;
 import main.model.Trip;
-import main.model.User;
 import main.repository.TripRepository;
 import main.web.dto.TripResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import main.web.dto.MemberResponse;
+
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +19,6 @@ public class TripService {
 
     public List<TripResponse> getTripsForUser(UUID userId) {
         List<Trip> trips = tripRepository.findAllByMembersId(userId);
-
-        System.out.println("trips USER id : " + userId);
 
         return trips.stream()
                 .map(t -> TripResponse.builder()
@@ -36,7 +35,7 @@ public class TripService {
                         .members(
                                 t.getMembers()
                                         .stream()
-                                        .map(User::getEmail)
+                                        .map(MemberResponse::fromUser)
                                         .toList()
                         )
                         .build()
@@ -63,11 +62,12 @@ public class TripService {
                 .ownerEmail(trip.getOwnerEmail())
                 ._createdOn(trip.getCreatedOn())
                 .members(
-                        trip.getMembers().stream()
-                                .map(User::getEmail)
+                        trip.getMembers()
+                                .stream()
+                                .map(MemberResponse::fromUser)
                                 .toList()
                 )
                 .build();
     }
-
 }
+

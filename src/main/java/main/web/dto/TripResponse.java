@@ -1,15 +1,17 @@
 package main.web.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Data
 @Builder
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TripResponse {
 
     private UUID _id;
@@ -23,6 +25,6 @@ public class TripResponse {
     private String ownerEmail;
     private LocalDateTime _createdOn;
 
-    private List<String> members;
+    private List<MemberResponse> members;
 }
 
