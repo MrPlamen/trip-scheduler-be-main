@@ -1,6 +1,7 @@
 package main.web.dto;
 
 import lombok.*;
+import main.model.Trip;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

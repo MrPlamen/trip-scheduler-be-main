@@ -6,54 +6,59 @@ import main.model.User;
 import main.service.TripService;
 import main.service.UserService;
 import main.web.dto.TripResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
+import main.model.Trip;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/data")
+@RequiredArgsConstructor
 public class TripController {
 
     private final TripService tripService;
-
     private final UserService userService;
-
-    @Autowired
-    public TripController(TripService tripService, UserService userService) {
-        this.tripService = tripService;
-        this.userService = userService;
-    }
-
-//    @GetMapping("/mine")
-//    public List<TripResponse> getMyTrips(@RequestParam String email) {
-//        return tripService.getTripsForUser(email);
-//    }
 
     @GetMapping("/trips")
     public ResponseEntity<?> trips(HttpSession session) {
-
-        System.out.println("Good");
-
         UUID userId = (UUID) session.getAttribute("user_id");
-        System.out.println("user id : " + userId);
-        if (userId == null) {
-            return ResponseEntity.status(401).build();
-        }
+        if (userId == null) return ResponseEntity.status(401).build();
 
         List<TripResponse> tripsForUser = tripService.getTripsForUser(userId);
-        tripsForUser.forEach(trip -> System.out.println(trip.toString()));
-
         return ResponseEntity.ok(tripsForUser);
     }
 
     @GetMapping("/trips/{id}")
-    public TripResponse getOne(@PathVariable UUID id) {
+    public ResponseEntity<?> getOne(@PathVariable UUID id) {
+        try {
+            TripResponse trip = tripService.getTrip(id);
+            return ResponseEntity.ok(trip);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Trip not found");
+        }
+    }
 
-        System.out.println("Hit the road, Jack");
-        return tripService.getTrip(id);
+    @PostMapping("/trips")
+    public ResponseEntity<?> createTrip(@RequestBody Trip trip, HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+        if (userId == null) return ResponseEntity.status(401).build();
+
+        User owner = userService.getById(userId);
+        trip.setOwnerEmail(owner.getEmail());
+
+        trip.getMembers().add(owner);
+
+        try {
+            tripService.saveTrip(trip);
+            return ResponseEntity.ok("Trip saved successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error creating trip: " + e.getMessage());
+        }
     }
 }
 

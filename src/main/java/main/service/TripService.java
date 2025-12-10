@@ -2,51 +2,48 @@ package main.service;
 
 import lombok.RequiredArgsConstructor;
 import main.model.Trip;
+import main.model.User;
 import main.repository.TripRepository;
+import main.repository.UserRepository;
 import main.web.dto.TripResponse;
+import main.web.dto.MemberResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
-import main.web.dto.MemberResponse;
-
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TripService {
 
     private final TripRepository tripRepository;
+    private final UserRepository userRepository;
+
+    @Transactional
+    public Trip saveTrip(Trip trip) {
+
+        if (trip.getMembers() != null && !trip.getMembers().isEmpty()) {
+            Set<User> existingMembers = trip.getMembers().stream()
+                    .map(member -> userRepository.findByEmail(member.getEmail()).orElse(null))
+                    .filter(user -> user != null)
+                    .collect(Collectors.toSet());
+            trip.setMembers(existingMembers);
+        }
+
+        return tripRepository.save(trip);
+    }
 
     public List<TripResponse> getTripsForUser(UUID userId) {
         List<Trip> trips = tripRepository.findAllByMembersId(userId);
-
-        return trips.stream()
-                .map(t -> TripResponse.builder()
-                        ._id(t.getId())
-                        .title(t.getTitle())
-                        .category(t.getCategory())
-                        .startDate(t.getStartDate())
-                        .endDate(t.getEndDate())
-                        .duration(t.getDuration())
-                        .imageUrl(t.getImageUrl())
-                        .summary(t.getSummary())
-                        .ownerEmail(t.getOwnerEmail())
-                        ._createdOn(t.getCreatedOn())
-                        .members(
-                                t.getMembers()
-                                        .stream()
-                                        .map(MemberResponse::fromUser)
-                                        .toList()
-                        )
-                        .build()
-                )
-                .toList();
+        return trips.stream().map(this::toResponse).toList();
     }
 
     public TripResponse getTrip(UUID id) {
-        return tripRepository.findById(id)
-                .map(this::toResponse)
-                .orElseThrow();
+        return tripRepository.findById(id).map(this::toResponse)
+                .orElseThrow(() -> new RuntimeException("Trip not found"));
     }
 
     private TripResponse toResponse(Trip trip) {
@@ -61,13 +58,9 @@ public class TripService {
                 .summary(trip.getSummary())
                 .ownerEmail(trip.getOwnerEmail())
                 ._createdOn(trip.getCreatedOn())
-                .members(
-                        trip.getMembers()
-                                .stream()
-                                .map(MemberResponse::fromUser)
-                                .toList()
-                )
+                .members(trip.getMembers().stream()
+                        .map(MemberResponse::fromUser)
+                        .toList())
                 .build();
     }
 }
-
