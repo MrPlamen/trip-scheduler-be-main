@@ -69,9 +69,11 @@ public class VisitItemService {
         return VisitItemResponse.fromEntity(item);
     }
 
-    public void deleteVisitItem(UUID tripId, UUID visitItemId) {
-        VisitItem item = visitItemRepository.findByIdAndTripId(visitItemId, tripId)
+    public void deleteVisitItem(UUID visitItemId) {
+        VisitItem item = visitItemRepository.findById(visitItemId)
                 .orElseThrow(() -> new RuntimeException("Visit item not found"));
+
+        item.getMembers().clear();
 
         visitItemRepository.delete(item);
     }

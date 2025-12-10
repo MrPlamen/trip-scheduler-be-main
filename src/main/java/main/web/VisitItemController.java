@@ -44,27 +44,9 @@ public class VisitItemController {
         return visitItemService.createVisitItem(tripId, request);
     }
 
-    @PutMapping("/{visitItemId}")
-    public VisitItemResponse editVisitItem(
-            @PathVariable UUID tripId,
-            @PathVariable UUID visitItemId,
-            @RequestBody VisitItemRequest request
-    ) {
-        return visitItemService.editVisitItem(tripId, visitItemId, request);
-    }
-
-    @DeleteMapping("/{visitItemId}")
-    public void deleteVisitItem(
-            @PathVariable UUID tripId,
-            @PathVariable UUID visitItemId
-    ) {
-        visitItemService.deleteVisitItem(tripId, visitItemId);
-    }
-
     @GetMapping("/visit-items/{visitItemId}")
     public VisitItemResponse getVisitItemById(@PathVariable UUID visitItemId) {
 
-        System.out.println("I got hit - getVisitItemById");
         return visitItemService.getVisitItemById(visitItemId);
     }
 }
