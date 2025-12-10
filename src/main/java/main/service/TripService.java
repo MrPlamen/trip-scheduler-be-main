@@ -46,6 +46,31 @@ public class TripService {
                 .orElseThrow(() -> new RuntimeException("Trip not found"));
     }
 
+    @Transactional
+    public Trip updateTrip(UUID tripId, Trip updatedTrip) {
+        Trip existingTrip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new RuntimeException("Trip not found"));
+
+        existingTrip.setTitle(updatedTrip.getTitle());
+        existingTrip.setCategory(updatedTrip.getCategory());
+        existingTrip.setImageUrl(updatedTrip.getImageUrl());
+        existingTrip.setStartDate(updatedTrip.getStartDate());
+        existingTrip.setEndDate(updatedTrip.getEndDate());
+        existingTrip.setDuration(updatedTrip.getDuration());
+        existingTrip.setSummary(updatedTrip.getSummary());
+
+        return saveTrip(existingTrip);
+    }
+
+    public void deleteTrip(UUID tripId) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new RuntimeException("Trip not found"));
+
+        trip.getMembers().clear();
+
+        tripRepository.delete(trip);
+    }
+
     private TripResponse toResponse(Trip trip) {
         return TripResponse.builder()
                 ._id(trip.getId())

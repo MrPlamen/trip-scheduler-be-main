@@ -60,5 +60,30 @@ public class TripController {
             return ResponseEntity.status(500).body("Error creating trip: " + e.getMessage());
         }
     }
+
+    @PutMapping("/trips/{id}")
+    public ResponseEntity<?> editTrip(@PathVariable UUID id, @RequestBody Trip trip, HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+        if (userId == null) return ResponseEntity.status(401).build();
+
+        try {
+            tripService.updateTrip(id, trip);
+            return ResponseEntity.ok("Trip updated successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error updating trip: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/trips/{id}")
+    public ResponseEntity<?> deleteTrip(@PathVariable UUID id) {
+        try {
+            tripService.deleteTrip(id);
+            return ResponseEntity.ok("Trip deleted successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error deleting trip: " + e.getMessage());
+        }
+    }
 }
 
