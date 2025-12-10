@@ -30,6 +30,8 @@ public class WebSecurityConfig {
                                 "/users/me",
                                 "/data/trips",
                                 "/data/trips/**",
+                                "/visitItems",
+                                "/visitItems/**",
                                 "/trips/*/visit-items/**",
                                 "/trips/*/likes/**",
                                 "/visitItemLikes/**",
@@ -44,4 +46,5 @@ public class WebSecurityConfig {
         return http.build();
     }
 }
+
 

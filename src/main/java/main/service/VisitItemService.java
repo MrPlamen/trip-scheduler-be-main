@@ -47,6 +47,8 @@ public class VisitItemService {
         item.setTrip(trip);
         item.setTitle(request.getTitle());
         item.setDescription(request.getDescription());
+        item.setImageUrl(request.getImageUrl());
+        item.set_ownerId(request.get_ownerId());
 //        item.setDate(request.getDate());
 
         visitItemRepository.save(item);

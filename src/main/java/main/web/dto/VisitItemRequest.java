@@ -13,6 +13,9 @@ import java.util.UUID;
 public class VisitItemRequest {
     private String title;
     private String description;
+    private UUID _ownerId;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalDate date;
     private String imageUrl;
     private Integer order;

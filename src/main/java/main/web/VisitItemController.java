@@ -40,6 +40,7 @@ public class VisitItemController {
             @PathVariable UUID tripId,
             @RequestBody VisitItemRequest request
     ) {
+        System.out.println("ownerId " + request.get_ownerId());
         return visitItemService.createVisitItem(tripId, request);
     }
 
