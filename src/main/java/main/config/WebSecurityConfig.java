@@ -35,6 +35,7 @@ public class WebSecurityConfig {
                                 "/trips/*/visit-items/**",
                                 "/trips/*/likes/**",
                                 "/visitItemLikes/**",
+                                "/visit-items",
                                 "/visit-items/**",
                                 "/comments/**",
                                 "/error"

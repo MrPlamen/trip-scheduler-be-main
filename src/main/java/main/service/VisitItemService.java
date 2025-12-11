@@ -85,5 +85,11 @@ public class VisitItemService {
         return VisitItemResponse.fromEntity(item);
     }
 
+    public List<VisitItemResponse> getAllVisitItems() {
+        return visitItemRepository.findAll()
+                .stream()
+                .map(VisitItemResponse::fromEntity)
+                .toList();
+    }
 }
 
