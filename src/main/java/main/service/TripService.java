@@ -7,6 +7,7 @@ import main.repository.TripRepository;
 import main.repository.UserRepository;
 import main.web.dto.TripResponse;
 import main.web.dto.MemberResponse;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,5 +88,13 @@ public class TripService {
                         .map(MemberResponse::fromUser)
                         .toList())
                 .build();
+    }
+
+    public List<TripResponse> getLatestTrips(int limit) {
+        List<Trip> trips = tripRepository.findAllByOrderByCreatedOnDesc(PageRequest.of(0, limit));
+
+        return trips.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 }

@@ -85,5 +85,11 @@ public class TripController {
             return ResponseEntity.status(500).body("Error deleting trip: " + e.getMessage());
         }
     }
+
+    @GetMapping("/trips/public")
+    public ResponseEntity<List<TripResponse>> latestTrips() {
+        List<TripResponse> trips = tripService.getLatestTrips(3);
+        return ResponseEntity.ok(trips);
+    }
 }
 
