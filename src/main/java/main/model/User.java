@@ -33,7 +33,7 @@ public class User {
     @Column(nullable = false)
     private String avatarUrl;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @ManyToMany(mappedBy = "members")
@@ -41,17 +41,6 @@ public class User {
 
     @ManyToMany(mappedBy = "members")
     private Set<VisitItem> visitItems = new HashSet<>();
-
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-//    private WizardAlignment alignment;
-//
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-//    private House house;
-//
-//    @OneToMany(mappedBy = "wizard", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//    private List<Spell> spells = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime createdOn;

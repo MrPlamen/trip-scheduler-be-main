@@ -29,33 +29,26 @@ public class UserService {
     @Transactional
     public void createNewUser(RegisterRequest registerRequest) {
 
+        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+            throw new DomainException("Email already exists");
+        }
+
+        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
+            throw new DomainException("Username already exists");
+        }
+
+        if (registerRequest.getPassword().length() < 6) {
+            throw new DomainException("Password must be at least 6 characters");
+        }
+
         User user = User.builder()
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
                 .avatarUrl("https://cdn.vectorstock.com/i/1000v/92/16/default-profile-picture-avatar-user-icon-vector-46389216.jpg")
-//                .alignment(registerRequest.getAlignment())
-//                .house(registerRequest.getHouse())
                 .createdOn(LocalDateTime.now())
                 .updatedOn(LocalDateTime.now())
-//                .spells(new ArrayList<>())
                 .build();
-
-//        SpellDetails spellDetails = spellsProperties.getRandomByMinLearnedZero();
-//
-//        Spell initialSpell = Spell.builder()
-//                .code(spellDetails.getCode())
-//                .name(spellDetails.getName())
-//                .description(spellDetails.getDescription())
-//                .category(spellDetails.getCategory())
-//                .alignment(spellDetails.getAlignment())
-//                .image(spellDetails.getImage())
-//                .power(spellDetails.getPower())
-//                .createdOn(LocalDateTime.now())
-//                .user(user)
-//                .build();
-
-//        user.getSpells().add(initialSpell);
 
         userRepository.save(user);
     }
@@ -87,31 +80,4 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeAlignmentToDark(User user) {
-//        user.setAlignment(UserAlignment.DARK);
-        userRepository.save(user);
-    }
-
-//    public Map<String, List<SpellDetails>> getUnlearnedSpells(User user) {
-//        Set<String> learnedCodes = user.getSpells().stream()
-//                .map(Spell::getCode)
-//                .collect(Collectors.toSet());
-//
-//        List<SpellDetails> unlearned = spellsProperties.getSpells().stream()
-//                .filter(s -> !learnedCodes.contains(s.getCode()))
-//                .toList();
-//
-//        List<SpellDetails> available = unlearned.stream()
-//                .filter(s -> user.getSpells().size() >= s.getMinLearned())
-//                .toList();
-//
-//        List<SpellDetails> locked = unlearned.stream()
-//                .filter(s -> user.getSpells().size() < s.getMinLearned())
-//                .toList();
-//
-//        Map<String, List<SpellDetails>> result = new HashMap<>();
-//        result.put("available", available);
-//        result.put("locked", locked);
-//        return result;
-//    }
 }
