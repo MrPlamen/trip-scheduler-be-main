@@ -41,6 +41,8 @@ public class WebSecurityConfig {
                                 "/comments/**",
                                 "/error"
                         ).permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/admin/search").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout

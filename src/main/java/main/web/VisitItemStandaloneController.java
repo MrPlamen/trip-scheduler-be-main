@@ -22,7 +22,6 @@ public class VisitItemStandaloneController {
     @GetMapping("/{visitItemId}")
     public VisitItemResponse getVisitItemById(@PathVariable UUID visitItemId) {
 
-        System.out.println("I got hit - getVisitItemById");
         return visitItemService.getVisitItemById(visitItemId);
     }
 

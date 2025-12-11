@@ -2,6 +2,7 @@ package main.service;
 
 import jakarta.transaction.Transactional;
 import main.exception.DomainException;
+import main.model.Role;
 import main.model.User;
 import main.repository.UserRepository;
 import main.web.dto.LoginRequest;
@@ -45,6 +46,7 @@ public class UserService {
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
+                .role(Role.USER)
                 .avatarUrl("https://cdn.vectorstock.com/i/1000v/92/16/default-profile-picture-avatar-user-icon-vector-46389216.jpg")
                 .createdOn(LocalDateTime.now())
                 .updatedOn(LocalDateTime.now())
@@ -64,6 +66,10 @@ public class UserService {
             throw new DomainException("Incorrect username or password");
         }
 
+        if (user.isBlocked()) {
+            throw new DomainException("User is blocked");
+        }
+
         return user;
     }
 
@@ -73,11 +79,37 @@ public class UserService {
     }
 
     @Transactional
-    public void updateProfile(User user, String username, String avatarUrl) {
+    public void updateProfile(User user, String username, String email, String avatarUrl) {
         user.setUsername(username);
-//        user.setAvatarUrl(avatarUrl);
+        user.setAvatarUrl(avatarUrl);
+        user.setEmail(email);
         user.setUpdatedOn(LocalDateTime.now());
         userRepository.save(user);
     }
 
+    @Transactional
+    public void blockUser(UUID userId) {
+        User user = getById(userId);
+        user.setBlocked(true);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void unblockUser(UUID userId) {
+        User user = getById(userId);
+        user.setBlocked(false);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateRole(UUID userId, String role) {
+        User user = getById(userId);
+        user.setRole(Role.valueOf(role.toUpperCase()));
+        userRepository.save(user);
+    }
+
+    public User searchByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new DomainException("User not found"));
+    }
 }

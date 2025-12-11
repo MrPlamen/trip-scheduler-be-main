@@ -31,20 +31,27 @@ public class User {
     private String password;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column(nullable = false)
     private String avatarUrl;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToMany(mappedBy = "members")
-    private Set<Trip> trips = new HashSet<>();
-
-    @ManyToMany(mappedBy = "members")
-    private Set<VisitItem> visitItems = new HashSet<>();
+    @Column(nullable = false)
+    private boolean blocked = false;
 
     @Column(nullable = false)
     private LocalDateTime createdOn;
 
     @Column(nullable = false)
     private LocalDateTime updatedOn;
+
+    @ManyToMany(mappedBy = "members")
+    private Set<Trip> trips = new HashSet<>();
+
+    @ManyToMany(mappedBy = "members")
+    private Set<VisitItem> visitItems = new HashSet<>();
 }

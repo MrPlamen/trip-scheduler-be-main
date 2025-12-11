@@ -23,7 +23,7 @@ public class TripLikeService {
     public TripLike likeTrip(UUID tripId, UUID userId, String email) {
         TripLike existing = repository.findByTripIdAndUserId(tripId, userId);
         if (existing != null) {
-            return existing; // already liked
+            return existing;
         }
 
         TripLike like = new TripLike();

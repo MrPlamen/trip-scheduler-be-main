@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.URL;
 public class EditProfileRequest {
 
     @NotBlank
-    @Size(min = 6, max = 12)
+    @Size(min = 3, max = 18)
     private String username;
 
     @NotBlank

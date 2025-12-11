@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" th:href="@{/css/admin-panel.css}">
+</head>
+<body>
+<section id="admin-panel">
+    <h2>Admin Panel</h2>
+
+    <form action="#" method="get">
+        <input type="text" name="email" placeholder="Enter user email to search" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <div th:if="${user != null}">
+        <table>
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${user.username}">Username</td>
+                <td th:text="${user.email}">Email</td>
+                <td>
+                    <form th:action="@{/admin/role/{userId}(userId=${user.id})}" method="post">
+                        <select name="role" th:value="${user.role}">
+                            <option th:value="USER" th:selected="${user.role == 'USER'}">USER</option>
+                            <option th:value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+                <td>
+                    <span th:class="${user.blocked} ? 'blocked' : 'active'" th:text="${user.blocked} ? 'Blocked' : 'Active'"></span>
+                </td>
+                <td>
+                    <form th:if="!${user.blocked}" th:action="@{/admin/block/{userId}(userId=${user.id})}" method="post">
+                        <button type="submit">Block</button>
+                    </form>
+                    <form th:if="${user.blocked}" th:action="@{/admin/unblock/{userId}(userId=${user.id})}" method="post">
+                        <button type="submit">Unblock</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${user == null and email != null}">
+        <p>User not found.</p>
+    </div>
+</section>
+</body>
+</html>
