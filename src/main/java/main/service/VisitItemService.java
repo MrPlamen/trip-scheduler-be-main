@@ -8,6 +8,7 @@ import main.web.dto.VisitItemRequest;
 import main.web.dto.VisitItemResponse;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,7 +50,7 @@ public class VisitItemService {
         item.setDescription(request.getDescription());
         item.setImageUrl(request.getImageUrl());
         item.set_ownerId(request.get_ownerId());
-//        item.setDate(request.getDate());
+        item.setCreatedOn(LocalDateTime.now());
 
         visitItemRepository.save(item);
 
@@ -62,7 +63,8 @@ public class VisitItemService {
 
         item.setTitle(request.getTitle());
         item.setDescription(request.getDescription());
-//        item.setDate(request.getDate());
+        item.setImageUrl(request.getImageUrl());
+        item.setUpdatedOn(LocalDateTime.now());
 
         visitItemRepository.save(item);
 

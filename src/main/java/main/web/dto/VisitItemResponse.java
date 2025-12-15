@@ -32,6 +32,7 @@ public class VisitItemResponse {
         dto.setTitle(entity.getTitle());
         dto.setDescription(entity.getDescription());
         dto.setImageUrl(entity.getImageUrl());
+        dto.setDate(LocalDate.from(entity.getCreatedOn()));
         dto.setOwnerId(entity.get_ownerId());
         dto.setMembers(
                 entity.getMembers().stream()

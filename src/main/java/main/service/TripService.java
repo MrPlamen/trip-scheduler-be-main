@@ -60,6 +60,15 @@ public class TripService {
         existingTrip.setDuration(updatedTrip.getDuration());
         existingTrip.setSummary(updatedTrip.getSummary());
 
+        if (updatedTrip.getMembers() != null) {
+            Set<User> resolvedMembers = updatedTrip.getMembers().stream()
+                    .map(member -> userRepository.findByEmail(member.getEmail()).orElse(null))
+                    .filter(user -> user != null)
+                    .collect(Collectors.toSet());
+
+            existingTrip.setMembers(resolvedMembers);
+        }
+
         return saveTrip(existingTrip);
     }
 
